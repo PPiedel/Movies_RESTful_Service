@@ -6,6 +6,7 @@ import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.repository.MovieRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MovieServiceImpl implements MovieService {
@@ -20,4 +21,11 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
+
+    @Override
+    public Optional<Movie> findMovieById(Long id) {
+        return movieRepository.findById(id);
+    }
+
+
 }
