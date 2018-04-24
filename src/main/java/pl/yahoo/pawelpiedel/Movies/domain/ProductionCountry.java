@@ -1,18 +1,20 @@
 package pl.yahoo.pawelpiedel.Movies.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "production_country")
 public class ProductionCountry {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+
+    @Column(name = "iso_code")
     private String isoCode;
+
+    private String name;
+
 
     public Long getId() {
         return id;

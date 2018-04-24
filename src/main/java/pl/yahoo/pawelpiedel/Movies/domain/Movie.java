@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private String title;
 
     @ManyToMany
     @JoinTable(name = "Movies_Genres",
@@ -28,12 +31,101 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_country_id", referencedColumnName = "id"))
     private List<ProductionCountry> productionCountries;
-    private String title;
-    private int budget;
+
+    @Column(name = "release_date")
     private Date releaseDate;
+
+    @Column(name = "backdrop_path")
     private String backdropPath;
+
+    @Column(nullable = true)
+    private Integer budget;
+
+    @Column(nullable = true)
     private String duration;
+
+    @Column(nullable = true)
     private String overview;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public List<ProductionCompany> getProductionCompanies() {
+        return productionCompanies;
+    }
+
+    public void setProductionCompanies(List<ProductionCompany> productionCompanies) {
+        this.productionCompanies = productionCompanies;
+    }
+
+    public List<ProductionCountry> getProductionCountries() {
+        return productionCountries;
+    }
+
+    public void setProductionCountries(List<ProductionCountry> productionCountries) {
+        this.productionCountries = productionCountries;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
+    public Integer getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -71,4 +163,6 @@ public class Movie {
                 ", overview='" + overview + '\'' +
                 '}';
     }
+
+
 }
