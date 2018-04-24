@@ -24,7 +24,7 @@ public class Movie {
     private List<ProductionCompany> productionCompanies;
 
     @ManyToMany
-    @JoinTable(name = "Movies_Production_Companies",
+    @JoinTable(name = "Movies_Production_Countries",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_country_id", referencedColumnName = "id"))
     private List<ProductionCountry> productionCountries;
