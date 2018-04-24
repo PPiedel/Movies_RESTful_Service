@@ -1,15 +1,33 @@
 package pl.yahoo.pawelpiedel.Movies.domain;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String title;
+
+    @ManyToMany
+    @JoinTable(name = "Movies_Genres",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private List<Genre> genres;
+
+    @ManyToMany
+    @JoinTable(name = "Movies_Production_Companies",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "production_company_id", referencedColumnName = "id"))
     private List<ProductionCompany> productionCompanies;
+
+    @ManyToMany
+    @JoinTable(name = "Movies_Production_Companies",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "production_country_id", referencedColumnName = "id"))
     private List<ProductionCountry> productionCountries;
+    private String title;
     private int budget;
     private Date releaseDate;
     private String backdropPath;
