@@ -132,14 +132,14 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return budget == movie.budget &&
-                Objects.equals(id, movie.id) &&
+        return Objects.equals(id, movie.id) &&
                 Objects.equals(title, movie.title) &&
                 Objects.equals(genres, movie.genres) &&
                 Objects.equals(productionCompanies, movie.productionCompanies) &&
                 Objects.equals(productionCountries, movie.productionCountries) &&
                 Objects.equals(releaseDate, movie.releaseDate) &&
                 Objects.equals(backdropPath, movie.backdropPath) &&
+                Objects.equals(budget, movie.budget) &&
                 Objects.equals(duration, movie.duration) &&
                 Objects.equals(overview, movie.overview);
     }
@@ -147,7 +147,7 @@ public class Movie {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, genres, productionCompanies, productionCountries, budget, releaseDate, backdropPath, duration, overview);
+        return Objects.hash(id, title, genres, productionCompanies, productionCountries, releaseDate, backdropPath, budget, duration, overview);
     }
 
     @Override
@@ -156,13 +156,13 @@ public class Movie {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", genres=" + genres +
-                ", budget=" + budget +
+                ", productionCompanies=" + productionCompanies.stream().map(ProductionCompany::toString) +
+                ", productionCountries=" + productionCountries.stream().map(ProductionCountry::toString) +
                 ", releaseDate=" + releaseDate +
                 ", backdropPath='" + backdropPath + '\'' +
+                ", budget=" + budget +
                 ", duration='" + duration + '\'' +
                 ", overview='" + overview + '\'' +
                 '}';
     }
-
-
 }

@@ -10,9 +10,6 @@ public class ProductionCountry {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "iso_code")
-    private String isoCode;
-
     private String name;
 
 
@@ -32,33 +29,26 @@ public class ProductionCountry {
         this.name = name;
     }
 
-    public String getIsoCode() {
-        return isoCode;
-    }
-
-    public void setIsoCode(String isoCode) {
-        this.isoCode = isoCode;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductionCountry that = (ProductionCountry) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(isoCode, that.isoCode);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, isoCode);
+
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "ProductionCountry{" +
-                "name='" + name + '\'' +
-                ", isoCode='" + isoCode + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

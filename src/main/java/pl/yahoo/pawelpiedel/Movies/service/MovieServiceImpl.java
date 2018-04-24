@@ -27,5 +27,10 @@ public class MovieServiceImpl implements MovieService {
         return movieRepository.findById(id);
     }
 
+    @Override
+    public Movie save(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
 
 }
