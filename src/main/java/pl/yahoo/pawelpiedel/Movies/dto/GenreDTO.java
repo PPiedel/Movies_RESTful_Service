@@ -1,15 +1,21 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
-
-@Getter
-@Setter
-@ToString
 public class GenreDTO {
-    @NotNull
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "GenreDTO{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

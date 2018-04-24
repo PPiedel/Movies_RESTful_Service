@@ -1,12 +1,20 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
 public class ProductionCountryDTO {
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductionCountryDTO{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
