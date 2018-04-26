@@ -38,13 +38,13 @@ public class Movie {
     @Column(name = "backdrop_path")
     private String backdropPath;
 
-    @Column(nullable = true)
+    @Column()
     private Integer budget;
 
-    @Column(nullable = true)
+    @Column()
     private String duration;
 
-    @Column(nullable = true)
+    @Column()
     private String overview;
 
     public Long getId() {
