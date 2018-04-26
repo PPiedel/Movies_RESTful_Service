@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("v1/movies")
+@RequestMapping("api/movies")
 public class MoviesController {
 
     @Autowired

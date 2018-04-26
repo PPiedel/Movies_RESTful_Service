@@ -1,6 +1,5 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class MovieDTO {
     private Date releaseDate;
     private String backdropPath;
     private Integer budget;
-    private String duration;
+    private Integer duration;
     private String overview;
 
     public Long getId() {
@@ -80,11 +79,11 @@ public class MovieDTO {
         this.budget = budget;
     }
 
-    public String getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

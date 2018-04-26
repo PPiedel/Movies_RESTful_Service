@@ -42,7 +42,7 @@ public class Movie {
     private Integer budget;
 
     @Column()
-    private String duration;
+    private Integer duration;
 
     @Column()
     private String overview;
@@ -111,11 +111,11 @@ public class Movie {
         this.budget = budget;
     }
 
-    public String getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
