@@ -1,7 +1,10 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
 
+import javax.validation.constraints.NotNull;
+
 public class GenreDTO {
+    @NotNull
     private String name;
 
     public String getName() {

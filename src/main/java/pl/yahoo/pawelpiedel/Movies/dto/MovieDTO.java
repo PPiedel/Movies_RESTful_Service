@@ -1,5 +1,6 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
