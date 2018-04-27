@@ -115,7 +115,7 @@ public class MovieServiceImplTest {
         //given
         Movie movie = new Movie();
         movie.setTitle("testTitle");
-        when(movieRepository.save(movie)).thenReturn(movie);
+        when(movieRepository.save(any(Movie.class))).thenReturn(movie);
 
         //when
         Movie saved = movieRepository.save(movie);

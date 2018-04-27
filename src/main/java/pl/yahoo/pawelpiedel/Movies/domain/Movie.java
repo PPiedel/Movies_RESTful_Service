@@ -1,6 +1,9 @@
 package pl.yahoo.pawelpiedel.Movies.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +36,7 @@ public class Movie {
     private List<ProductionCountry> productionCountries;
 
     @Column(name = "release_date")
-    private Date releaseDate;
+    private LocalDate releaseDate;
 
     @Column(name = "backdrop_path")
     private String backdropPath;
@@ -87,11 +90,11 @@ public class Movie {
         this.productionCountries = productionCountries;
     }
 
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
