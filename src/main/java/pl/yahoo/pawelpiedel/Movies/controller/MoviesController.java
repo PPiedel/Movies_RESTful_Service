@@ -48,11 +48,7 @@ public class MoviesController {
     @PostMapping
     public ResponseEntity<?> addMovie(@RequestBody MovieDTO movieDTO) {
         Movie movie;
-        try {
-            movie = mapper.convertToEntity(movieDTO);
-        } catch (ParseException e) {
-            return ResponseEntity.noContent().build();
-        }
+        movie = mapper.convertToEntity(movieDTO);
 
         Movie savedMovie = movieService.save(movie);
         if (savedMovie!=null){

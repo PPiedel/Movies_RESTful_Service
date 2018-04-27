@@ -22,6 +22,7 @@ import pl.yahoo.pawelpiedel.Movies.dto.*;
 import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,11 +35,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.yahoo.pawelpiedel.Movies.dto.EntityDTOMapper.DATE_TIME_FORMATTER;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MoviesController.class)
 public class MoviesControllerTest {
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
     private static final String API_BASE_URL = "/api/movies";
 
     @Autowired
@@ -139,8 +140,36 @@ public class MoviesControllerTest {
         //then
         resultActions
                 .andExpect(status().isCreated())
-                .andExpect(status().isCreated())
                 .andExpect(header().string("location", containsString("http://localhost" + API_BASE_URL)));
+
+    }
+
+    @Test
+    public void addMovieShouldResponseWithNoContent() throws Exception {
+        //given
+        Movie movie = createTestMovie();
+        MovieDTO movieDTO = createMovieDTOFromEntity(movie);
+        when(movieService.save(ArgumentMatchers.any(Movie.class))).thenReturn(null);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post(API_BASE_URL).contentType(MediaType.APPLICATION_JSON).content(asJsonString(movieDTO)));
+
+        //then
+        resultActions
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void addMovieShouldResponseWithCientErrorWhenEmptyJSONIsPassed() throws Exception {
+        //given
+
+        //when
+        String empty = "";
+        ResultActions resultActions = mockMvc.perform(post(API_BASE_URL).contentType(MediaType.APPLICATION_JSON).content(empty));
+
+        //then
+        resultActions
+                .andExpect(status().is4xxClientError());
 
     }
 
@@ -151,10 +180,6 @@ public class MoviesControllerTest {
             throw new RuntimeException(e);
         }
     }
-
-    //TODO updateExistingMovie;
-
-    //TODO tryToAddEmptyDTO;
 
     private Movie createTestMovie() {
         Genre genre = new Genre();

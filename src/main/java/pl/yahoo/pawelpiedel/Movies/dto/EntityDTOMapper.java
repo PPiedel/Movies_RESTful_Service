@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class EntityDTOMapper {
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
     private ModelMapper modelMapper;
 
     @Autowired
@@ -24,7 +24,7 @@ public class EntityDTOMapper {
         this.modelMapper = modelMapper;
     }
 
-    public Movie convertToEntity(MovieDTO movieDto) throws ParseException {
+    public Movie convertToEntity(MovieDTO movieDto) {
         List<Genre> genres = movieDto.getGenres().stream().map(this::convertToEntity).collect(Collectors.toList());
         List<ProductionCompany> productionCompanies = movieDto.getProductionCompanies().stream().map(this::convertToEntity).collect(Collectors.toList());
         List<ProductionCountry> productionCountries = movieDto.getProductionCountries().stream().map(this::convertToEntity).collect(Collectors.toList());

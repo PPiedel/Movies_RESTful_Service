@@ -1,13 +1,10 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class MovieDTO {
+    @NotNull
     private String title;
     private List<GenreDTO> genres;
     private List<ProductionCompanyDTO> productionCompanies;
