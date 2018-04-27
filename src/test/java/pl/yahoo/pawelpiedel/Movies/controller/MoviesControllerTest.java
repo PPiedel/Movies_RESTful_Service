@@ -173,6 +173,20 @@ public class MoviesControllerTest {
 
     }
 
+    @Test
+    public void addMovieShouldResponseWithCientErrorWhenNotValidJSONIsPassed() throws Exception {
+        //given
+
+        //when
+        String onlyNull = "null";
+        ResultActions resultActions = mockMvc.perform(post(API_BASE_URL).contentType(MediaType.APPLICATION_JSON).content(onlyNull));
+
+        //then
+        resultActions
+                .andExpect(status().is4xxClientError());
+
+    }
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -181,7 +195,7 @@ public class MoviesControllerTest {
         }
     }
 
-    private Movie createTestMovie() {
+    public static Movie createTestMovie() {
         Genre genre = new Genre();
         genre.setName("comedy");
         List<Genre> genres = Collections.singletonList(genre);
@@ -213,7 +227,7 @@ public class MoviesControllerTest {
         return movie;
     }
 
-    private MovieDTO createMovieDTOFromEntity(Movie movie) {
+    public static MovieDTO createMovieDTOFromEntity(Movie movie) {
         MovieDTO movieDTO = new MovieDTO();
         GenreDTO genreDTO1 = new GenreDTO(movie.getGenres().get(0).getName());
         List<GenreDTO> genres = new ArrayList<>();

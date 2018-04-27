@@ -1,5 +1,7 @@
 package pl.yahoo.pawelpiedel.Movies.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,6 @@ import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
 import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
 import java.net.URI;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/movies")
 public class MoviesController {
+    private static final Logger logger = LoggerFactory.getLogger(MoviesController.class);
     private MovieService movieService;
     private EntityDTOMapper mapper;
 
@@ -49,6 +51,7 @@ public class MoviesController {
     public ResponseEntity<?> addMovie(@RequestBody MovieDTO movieDTO) {
         Movie movie;
         movie = mapper.convertToEntity(movieDTO);
+        logger.info(movie.toString());
 
         Movie savedMovie = movieService.save(movie);
         if (savedMovie!=null){

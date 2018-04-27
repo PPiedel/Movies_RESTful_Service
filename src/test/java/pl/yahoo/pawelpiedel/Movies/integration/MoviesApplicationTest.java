@@ -1,4 +1,4 @@
-package pl.yahoo.pawelpiedel.Movies;
+package pl.yahoo.pawelpiedel.Movies.integration;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

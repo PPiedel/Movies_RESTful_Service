@@ -1,10 +1,7 @@
 package pl.yahoo.pawelpiedel.Movies.domain;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,19 +14,19 @@ public class Movie {
 
     private String title;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Movies_Genres",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private List<Genre> genres;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Movies_Production_Companies",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_company_id", referencedColumnName = "id"))
     private List<ProductionCompany> productionCompanies;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Movies_Production_Countries",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_country_id", referencedColumnName = "id"))
@@ -158,7 +155,7 @@ public class Movie {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", genres=" + genres +
+                ", genres=" + genres.stream().map(Genre::toString) +
                 ", productionCompanies=" + productionCompanies.stream().map(ProductionCompany::toString) +
                 ", productionCountries=" + productionCountries.stream().map(ProductionCountry::toString) +
                 ", releaseDate=" + releaseDate +
