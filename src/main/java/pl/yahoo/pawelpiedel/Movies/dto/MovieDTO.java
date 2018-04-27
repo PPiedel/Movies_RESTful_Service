@@ -1,27 +1,22 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class MovieDTO {
-    private Long id;
     private String title;
     private List<GenreDTO> genres;
     private List<ProductionCompanyDTO> productionCompanies;
     private List<ProductionCountryDTO> productionCountries;
-    private Date releaseDate;
+    private String date;
     private String backdropPath;
     private Integer budget;
     private Integer duration;
     private String overview;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -55,12 +50,12 @@ public class MovieDTO {
         this.productionCountries = productionCountries;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getBackdropPath() {

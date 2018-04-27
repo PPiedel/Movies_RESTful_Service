@@ -6,6 +6,13 @@ public class ProductionCompanyDTO {
     @NotNull
     private String name;
 
+    public ProductionCompanyDTO() {
+    }
+
+    public ProductionCompanyDTO(@NotNull String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

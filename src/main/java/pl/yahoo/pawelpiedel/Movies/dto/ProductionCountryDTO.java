@@ -3,6 +3,14 @@ package pl.yahoo.pawelpiedel.Movies.dto;
 import javax.validation.constraints.NotNull;
 
 public class ProductionCountryDTO {
+
+    public ProductionCountryDTO() {
+    }
+
+    public ProductionCountryDTO(@NotNull String name) {
+        this.name = name;
+    }
+
     @NotNull
     private String name;
 

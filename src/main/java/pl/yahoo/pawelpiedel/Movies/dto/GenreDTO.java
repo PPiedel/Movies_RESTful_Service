@@ -7,6 +7,13 @@ public class GenreDTO {
     @NotNull
     private String name;
 
+    public GenreDTO() {
+    }
+
+    public GenreDTO(@NotNull String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
