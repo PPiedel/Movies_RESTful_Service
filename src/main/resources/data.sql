@@ -22,4 +22,15 @@ INSERT INTO production_country(id,iso_code,name) VALUES (5,'DE','Germany');
 INSERT INTO production_country(id,iso_code,name) VALUES (6,'FR','France');
 INSERT INTO production_country(id,iso_code,name) VALUES (7,'IS','Iceland');
 
-INSERT INTO movie(id,title,duration,release_date) VALUES (1,'The Shawshank Redemption',165,'1994-09-22')
+INSERT INTO movie(id,title,duration,release_date) VALUES (1,'The Shawshank Redemption',165,'1994-09-22');
+
+INSERT INTO movies_genres(movie_id,genre_id) VALUES (1,1);
+INSERT INTO movies_genres(movie_id,genre_id) VALUES (1,2);
+INSERT INTO movies_genres(movie_id,genre_id) VALUES (1,3);
+
+INSERT INTO MOVIES_PRODUCTION_COMPANIES(movie_id,production_company_id) VALUES (1,1);
+INSERT INTO MOVIES_PRODUCTION_COMPANIES(movie_id,production_company_id) VALUES (1,2);
+
+INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (1,1);
+INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (1,2);
+INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (1,3);
