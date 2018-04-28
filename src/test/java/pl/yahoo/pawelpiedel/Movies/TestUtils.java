@@ -35,6 +35,7 @@ public class TestUtils {
 
         Movie movie = new Movie();
         String movie1Title = "test1";
+        movie.setId(1L);
         movie.setTitle(movie1Title);
         movie.setGenres(genres);
         movie.setProductionCountries(productionCountries);

@@ -113,6 +113,33 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
+    public void afterAddingMovieCanBeRead() throws Exception {
+        //given
+        Movie movie = createTestMovieWithAllFields();
+        MovieDTO savedDTO = createMovieDTOFromEntity(movie);
+        mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(savedDTO)));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get(API_BASE_URL + "/" + "1")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is(savedDTO.getTitle())))
+                .andExpect(jsonPath("$.backdropPath", is(savedDTO.getBackdropPath())))
+                .andExpect(jsonPath("$.duration", is(savedDTO.getDuration())))
+                .andExpect(jsonPath("$.budget", is(savedDTO.getBudget())))
+                .andExpect(jsonPath("$.overview", is(savedDTO.getOverview())))
+                .andExpect(jsonPath("$.genres[0].name", is(savedDTO.getGenres().get(0).getName())))
+                .andExpect(jsonPath("$.date", is(DATE_TIME_FORMATTER.format(movie.getReleaseDate()))))
+                .andExpect(jsonPath("$.productionCountries[0].name", is(savedDTO.getProductionCountries().get(0).getName())))
+                .andExpect(jsonPath("$.productionCompanies[0].name", is(savedDTO.getProductionCompanies().get(0).getName())));
+    }
+
+    @Test
     public void whenMovieWithNoTitleToCreationResponseWithClientError() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
