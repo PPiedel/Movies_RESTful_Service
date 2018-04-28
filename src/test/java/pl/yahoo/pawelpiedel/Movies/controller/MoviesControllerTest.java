@@ -14,16 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import pl.yahoo.pawelpiedel.Movies.domain.Genre;
+import pl.yahoo.pawelpiedel.Movies.TestUtils;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
-import pl.yahoo.pawelpiedel.Movies.domain.ProductionCompany;
-import pl.yahoo.pawelpiedel.Movies.domain.ProductionCountry;
-import pl.yahoo.pawelpiedel.Movies.dto.*;
+import pl.yahoo.pawelpiedel.Movies.dto.EntityDTOMapper;
+import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
 import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +32,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static pl.yahoo.pawelpiedel.Movies.TestUtils.createMovieDTOFromEntity;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MoviesController.class)
 public class MoviesControllerTest {
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
     private static final String API_BASE_URL = "/api/movies";
 
     @Autowired
@@ -51,7 +49,7 @@ public class MoviesControllerTest {
     @Test
     public void getAllMoviesShouldReturnJsonArrayWithOneMovieDTO() throws Exception {
         //given
-        Movie movie = createTestMovie();
+        Movie movie = TestUtils.createTestMovieWithAllFields();
         List<Movie> movies = Collections.singletonList(movie);
         when(movieService.getAllMovies()).thenReturn(movies);
 
@@ -91,7 +89,7 @@ public class MoviesControllerTest {
     @Test
     public void getMovieDetailsShouldReturnOkResponseWithMovie() throws Exception {
         //given
-        Movie movie = createTestMovie();
+        Movie movie = TestUtils.createTestMovieWithAllFields();
         movie.setId(1L);
         when(movieService.findMovieById(movie.getId())).thenReturn(Optional.of(movie));
 
@@ -115,7 +113,7 @@ public class MoviesControllerTest {
     @Test
     public void getMovieDetailsShouldReturnNotFoundResponse() throws Exception {
         //given
-        Long notExistingId = 5L;
+        Long notExistingId = 999L;
         when(movieService.findMovieById(notExistingId)).thenReturn(Optional.empty());
 
         //when
@@ -129,7 +127,7 @@ public class MoviesControllerTest {
     @Test
     public void addMovieShouldResposneWithIsCreated() throws Exception {
         //given
-        Movie movie = createTestMovie();
+        Movie movie = TestUtils.createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
         when(movieService.save(ArgumentMatchers.any())).thenReturn(movie);
 
@@ -147,7 +145,7 @@ public class MoviesControllerTest {
     @Test
     public void addMovieShouldResponseWithNoContent() throws Exception {
         //given
-        Movie movie = createTestMovie();
+        Movie movie = TestUtils.createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
         when(movieService.save(ArgumentMatchers.any(Movie.class))).thenReturn(null);
 
@@ -193,65 +191,6 @@ public class MoviesControllerTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static Movie createTestMovie() {
-        Genre genre = new Genre();
-        genre.setName("comedy");
-        List<Genre> genres = Collections.singletonList(genre);
-
-        ProductionCountry productionCountry = new ProductionCountry();
-        productionCountry.setId(1L);
-        productionCountry.setName("Poland");
-        List<ProductionCountry> productionCountries = Collections.singletonList(productionCountry);
-
-        ProductionCompany productionCompany = new ProductionCompany();
-        productionCompany.setId(1L);
-        productionCompany.setName("Walt Disney");
-        List<ProductionCompany> productionCompanies = Collections.singletonList(productionCompany);
-
-        Movie movie = new Movie();
-        String movie1Title = "test1";
-        movie.setId(1L);
-        movie.setTitle(movie1Title);
-        movie.setGenres(genres);
-        movie.setProductionCountries(productionCountries);
-        movie.setProductionCompanies(productionCompanies);
-        movie.setBudget(10000000);
-        movie.setDuration(123);
-        String backdropPath = "http://www.image1.pl/i1";
-        movie.setBackdropPath(backdropPath);
-        String testOverview = "test Overview";
-        movie.setOverview(testOverview);
-        movie.setReleaseDate(LocalDate.of(1990, 2, 24));
-        return movie;
-    }
-
-    public static MovieDTO createMovieDTOFromEntity(Movie movie) {
-        MovieDTO movieDTO = new MovieDTO();
-        GenreDTO genreDTO1 = new GenreDTO(movie.getGenres().get(0).getName());
-        List<GenreDTO> genres = new ArrayList<>();
-        genres.add(genreDTO1);
-
-        ProductionCompanyDTO productionCompanyDTO1 = new ProductionCompanyDTO(movie.getProductionCompanies().get(0).getName());
-        List<ProductionCompanyDTO> productionCompanies = new ArrayList<>();
-        productionCompanies.add(productionCompanyDTO1);
-
-
-        ProductionCountryDTO productionCountryDTO1 = new ProductionCountryDTO(movie.getProductionCountries().get(0).getName());
-        List<ProductionCountryDTO> productionCountries = new ArrayList<>();
-        productionCountries.add(productionCountryDTO1);
-
-        movieDTO.setTitle(movie.getTitle());
-        movieDTO.setGenres(genres);
-        movieDTO.setProductionCompanies(productionCompanies);
-        movieDTO.setProductionCountries(productionCountries);
-        movieDTO.setBudget(movie.getBudget());
-        movieDTO.setDuration(movie.getDuration());
-        movieDTO.setOverview(movie.getOverview());
-        movieDTO.setDate(movie.getReleaseDate().format(DATE_TIME_FORMATTER));
-
-        return movieDTO;
     }
 
     @TestConfiguration
