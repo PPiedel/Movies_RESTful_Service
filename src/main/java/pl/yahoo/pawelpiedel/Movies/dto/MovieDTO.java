@@ -1,11 +1,13 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MovieDTO {
+public class MovieDTO extends ResourceSupport {
     @NotNull
     @NotEmpty
     private String title;

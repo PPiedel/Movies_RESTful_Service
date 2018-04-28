@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 @RestController
 @RequestMapping("api/movies")
 public class MoviesController {
@@ -36,7 +38,7 @@ public class MoviesController {
         List<Movie> allMovies = movieService.getAllMovies();
 
         return allMovies.stream()
-                .map(mapper::convertToDTO)
+                .map(movie -> mapper.convertToDTO(movie))
                 .collect(Collectors.toList());
     }
 
@@ -50,21 +52,23 @@ public class MoviesController {
 
     @PostMapping
     public ResponseEntity<?> addMovie(@RequestBody @Valid MovieDTO movieDTO) {
-        Movie movie;
-        movie = mapper.convertToEntity(movieDTO);
-        logger.info(movie.toString());
-
+        Movie movie = mapper.convertToEntity(movieDTO);
         Movie savedMovie = movieService.save(movie);
+
         if (savedMovie!=null){
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(savedMovie.getId()).toUri();
+            URI location = buildUri(savedMovie);
 
             return ResponseEntity.created(location).build();
         }
         else {
             return ResponseEntity.noContent().build();
         }
+    }
+
+    private URI buildUri(Movie savedMovie) {
+        return ServletUriComponentsBuilder
+                        .fromCurrentRequest().path("/{id}")
+                        .buildAndExpand(savedMovie.getId()).toUri();
     }
 
 
