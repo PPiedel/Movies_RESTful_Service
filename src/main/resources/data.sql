@@ -22,15 +22,25 @@ INSERT INTO production_country(id,iso_code,name) VALUES (5,'DE','Germany');
 INSERT INTO production_country(id,iso_code,name) VALUES (6,'FR','France');
 INSERT INTO production_country(id,iso_code,name) VALUES (7,'IS','Iceland');
 
-INSERT INTO movie(id,title,duration,release_date) VALUES (1,'The Shawshank Redemption',165,'1994-09-22');
+INSERT INTO movie(id,title,duration,release_date,overview) VALUES (1,'The Shawshank Redemption',165,'1994-09-22','Movie overview');
+INSERT INTO movie(id,title,duration,release_date,overview) VALUES (2,'Pirates of the Caraiben',128,'2017-4-17','Test overview');
+INSERT INTO movie(id,title,duration,release_date,overview) VALUES (3,'The Fog',120,'2016-10-16','The Fog overview');
 
 INSERT INTO movies_genres(movie_id,genre_id) VALUES (1,1);
 INSERT INTO movies_genres(movie_id,genre_id) VALUES (1,2);
 INSERT INTO movies_genres(movie_id,genre_id) VALUES (1,3);
+INSERT INTO movies_genres(movie_id,genre_id) VALUES (2,4);
+INSERT INTO movies_genres(movie_id,genre_id) VALUES (2,5);
+INSERT INTO movies_genres(movie_id,genre_id) VALUES (2,6);
 
 INSERT INTO MOVIES_PRODUCTION_COMPANIES(movie_id,production_company_id) VALUES (1,1);
 INSERT INTO MOVIES_PRODUCTION_COMPANIES(movie_id,production_company_id) VALUES (1,2);
+INSERT INTO MOVIES_PRODUCTION_COMPANIES(movie_id,production_company_id) VALUES (2,3);
+INSERT INTO MOVIES_PRODUCTION_COMPANIES(movie_id,production_company_id) VALUES (2,4);
 
 INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (1,1);
 INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (1,2);
 INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (1,3);
+INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (2,4);
+INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (2,5);
+INSERT INTO MOVIES_PRODUCTION_COUNTRIES(movie_id,production_country_id)VALUES (2,6);
