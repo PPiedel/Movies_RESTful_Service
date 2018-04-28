@@ -1,10 +1,13 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MovieDTO {
     @NotNull
+    @NotEmpty
     private String title;
     private List<GenreDTO> genres;
     private List<ProductionCompanyDTO> productionCompanies;
@@ -85,5 +88,20 @@ public class MovieDTO {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieDTO{" +
+                "title='" + title + '\'' +
+                ", genres=" + genres.stream().map(GenreDTO::toString).collect(Collectors.toList()) +
+                ", productionCompanies=" + productionCompanies.stream().map(ProductionCompanyDTO::toString).collect(Collectors.toList()) +
+                ", productionCountries=" + productionCountries.stream().map(ProductionCountryDTO::toString).collect(Collectors.toList()) +
+                ", date='" + date + '\'' +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", budget=" + budget +
+                ", duration=" + duration +
+                ", overview='" + overview + '\'' +
+                '}';
     }
 }

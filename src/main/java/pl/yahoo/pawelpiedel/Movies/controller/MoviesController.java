@@ -12,6 +12,7 @@ import pl.yahoo.pawelpiedel.Movies.dto.EntityDTOMapper;
 import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
 import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class MoviesController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addMovie(@RequestBody MovieDTO movieDTO) {
+    public ResponseEntity<?> addMovie(@RequestBody @Valid MovieDTO movieDTO) {
         Movie movie;
         movie = mapper.convertToEntity(movieDTO);
         logger.info(movie.toString());

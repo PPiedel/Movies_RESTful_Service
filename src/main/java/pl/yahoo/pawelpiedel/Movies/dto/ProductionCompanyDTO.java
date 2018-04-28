@@ -1,9 +1,11 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class ProductionCompanyDTO {
     @NotNull
+    @NotEmpty
     private String name;
 
     public ProductionCompanyDTO() {

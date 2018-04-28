@@ -1,8 +1,12 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class ProductionCountryDTO {
+    @NotNull
+    @NotEmpty
+    private String name;
 
     public ProductionCountryDTO() {
     }
@@ -10,9 +14,6 @@ public class ProductionCountryDTO {
     public ProductionCountryDTO(@NotNull String name) {
         this.name = name;
     }
-
-    @NotNull
-    private String name;
 
     public String getName() {
         return name;
