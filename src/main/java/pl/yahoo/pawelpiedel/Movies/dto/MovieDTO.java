@@ -1,11 +1,18 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
+import pl.yahoo.pawelpiedel.Movies.controller.MoviesController;
+import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static pl.yahoo.pawelpiedel.Movies.controller.MoviesController.ALL_MOVIES_LINK_RELATION_NAME;
 
 public class MovieDTO extends ResourceSupport {
     @NotNull
@@ -90,6 +97,22 @@ public class MovieDTO extends ResourceSupport {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public MovieDTO addLinks(Movie movie) {
+        addSelfLink(movie);
+        addAllMoviesLink();
+        return this;
+    }
+
+    private void addSelfLink(Movie movie) {
+        Link selfLink = linkTo(methodOn(MoviesController.class).getMovieDetails(movie.getId())).withSelfRel();
+        add(selfLink);
+    }
+
+    private void addAllMoviesLink() {
+        Link allLink = linkTo(methodOn(MoviesController.class).getAllMovies()).withRel(ALL_MOVIES_LINK_RELATION_NAME);
+        add(allLink);
     }
 
     @Override

@@ -18,12 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
 @RestController
 @RequestMapping("api/movies")
 public class MoviesController {
-    private static final Logger logger = LoggerFactory.getLogger(MoviesController.class);
+    public final static String ALL_MOVIES_LINK_RELATION_NAME = "all";
+    private final static Logger logger = LoggerFactory.getLogger(MoviesController.class);
     private MovieService movieService;
     private EntityDTOMapper mapper;
 
@@ -38,7 +37,7 @@ public class MoviesController {
         List<Movie> allMovies = movieService.getAllMovies();
 
         return allMovies.stream()
-                .map(movie -> mapper.convertToDTO(movie))
+                .map(movie -> mapper.convertToDTO(movie).addLinks(movie))
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +45,7 @@ public class MoviesController {
     public ResponseEntity<MovieDTO> getMovieDetails(@PathVariable(value = "id") Long id) {
         Optional<Movie> movie = movieService.findMovieById(id);
         return movie
-                .map(value -> new ResponseEntity<>(mapper.convertToDTO(value), HttpStatus.OK))
+                .map(value -> new ResponseEntity<>(mapper.convertToDTO(value).addLinks(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -70,6 +69,5 @@ public class MoviesController {
                         .fromCurrentRequest().path("/{id}")
                         .buildAndExpand(savedMovie.getId()).toUri();
     }
-
 
 }

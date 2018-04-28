@@ -1,12 +1,18 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import pl.yahoo.pawelpiedel.Movies.TestUtils;
 import pl.yahoo.pawelpiedel.Movies.domain.Genre;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.domain.ProductionCompany;
@@ -26,7 +32,7 @@ public class EntityDTOMapperTest {
     EntityDTOMapper mapper;
 
     @Test
-    public void convertToMovieEntityShouldReturnCorrectEntity() throws ParseException {
+    public void convertToMovieEntity() throws ParseException {
         //given
         MovieDTO movieDTO = new MovieDTO();
         GenreDTO genreDTO = new GenreDTO("comedy");
@@ -76,19 +82,28 @@ public class EntityDTOMapperTest {
     }
 
     @Test
-    public void convertToDto() {
-    }
+    public void convertToDTO() throws Exception {
+        //given
+        Movie entity = TestUtils.createTestMovieWithAllFields();
 
-    @Test
-    public void convertToEntity1() {
-    }
+        //when
+        MovieDTO convertedDTO = mapper.convertToDTO(entity);
 
-    @Test
-    public void convertToEntity2() {
-    }
+        //then
+        assertEquals(entity.getTitle(), convertedDTO.getTitle());
+        assertEquals(entity.getBackdropPath(), convertedDTO.getBackdropPath());
+        assertEquals(entity.getBudget(), convertedDTO.getBudget());
+        assertEquals(entity.getDuration(), convertedDTO.getDuration());
+        assertEquals(entity.getOverview(), convertedDTO.getOverview());
+        assertEquals(entity.getReleaseDate(), LocalDate.parse(convertedDTO.getDate()));
+        assertEquals(entity.getGenres().stream().map(Genre::getName).collect(Collectors.toList()),
+                convertedDTO.getGenres().stream().map(GenreDTO::getName).collect(Collectors.toList()));
 
-    @Test
-    public void convertToEntity3() {
+        assertEquals(entity.getProductionCompanies().stream().map(ProductionCompany::getName).collect(Collectors.toList()),
+                convertedDTO.getProductionCompanies().stream().map(ProductionCompanyDTO::getName).collect(Collectors.toList()));
+
+        assertEquals(entity.getProductionCountries().stream().map(ProductionCountry::getName).collect(Collectors.toList()),
+                convertedDTO.getProductionCountries().stream().map(ProductionCountryDTO::getName).collect(Collectors.toList()));
     }
 
     @TestConfiguration
