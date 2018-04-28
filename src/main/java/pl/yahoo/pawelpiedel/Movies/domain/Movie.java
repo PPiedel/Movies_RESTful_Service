@@ -15,19 +15,19 @@ public class Movie {
     private String title;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Movies_Genres",
+    @JoinTable(name = "movies_genres",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
     private List<Genre> genres;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Movies_Production_Companies",
+    @JoinTable(name = "movies_production_companies",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_company_id", referencedColumnName = "id"))
     private List<ProductionCompany> productionCompanies;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Movies_Production_Countries",
+    @JoinTable(name = "movies_production_countries",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_country_id", referencedColumnName = "id"))
     private List<ProductionCountry> productionCountries;
@@ -38,13 +38,10 @@ public class Movie {
     @Column(name = "backdrop_path")
     private String backdropPath;
 
-    @Column()
     private Integer budget;
 
-    @Column()
     private Integer duration;
 
-    @Column()
     private String overview;
 
     public Long getId() {

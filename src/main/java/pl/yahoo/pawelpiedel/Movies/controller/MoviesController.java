@@ -56,7 +56,6 @@ public class MoviesController {
 
         if (savedMovie!=null){
             URI location = buildUri(savedMovie);
-
             return ResponseEntity.created(location).build();
         }
         else {
