@@ -16,6 +16,12 @@ public class ProductionCountry {
     @Column(unique = true)
     private String name;
 
+    public ProductionCountry() { //required by Hibernate
+    }
+
+    public ProductionCountry(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
