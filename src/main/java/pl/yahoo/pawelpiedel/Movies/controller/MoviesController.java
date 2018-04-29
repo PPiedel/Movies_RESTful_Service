@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 public class MoviesController {
     public final static String ALL_MOVIES_LINK_RELATION_NAME = "all";
     private final static Logger logger = LoggerFactory.getLogger(MoviesController.class);
-    private MovieService movieService;
-    private EntityDTOMapper mapper;
+    private final MovieService movieService;
+    private final EntityDTOMapper mapper;
 
     @Autowired
     public MoviesController(MovieService movieService, EntityDTOMapper mapper) {

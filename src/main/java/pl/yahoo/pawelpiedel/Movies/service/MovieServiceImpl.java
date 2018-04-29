@@ -16,10 +16,10 @@ import java.util.Optional;
 
 @Component
 public class MovieServiceImpl implements MovieService {
-    private MovieRepository movieRepository;
-    private GenreRepository genreRepository;
-    private ProductionCompanyRepository productionCompanyRepository;
-    private ProductionCountryRepository productionCountryRepository;
+    private final MovieRepository movieRepository;
+    private final GenreRepository genreRepository;
+    private final ProductionCompanyRepository productionCompanyRepository;
+    private final ProductionCountryRepository productionCountryRepository;
 
     @Autowired
     public MovieServiceImpl(MovieRepository movieRepository, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository) {
