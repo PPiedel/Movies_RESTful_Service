@@ -1,4 +1,4 @@
-package pl.yahoo.pawelpiedel.Movies.service;
+package pl.yahoo.pawelpiedel.Movies.service.movie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

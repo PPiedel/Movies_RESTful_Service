@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.repository.MovieRepository;
+import pl.yahoo.pawelpiedel.Movies.service.movie.MovieService;
+import pl.yahoo.pawelpiedel.Movies.service.movie.MovieServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;

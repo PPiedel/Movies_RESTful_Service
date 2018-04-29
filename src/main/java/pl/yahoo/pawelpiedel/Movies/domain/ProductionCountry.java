@@ -10,9 +10,10 @@ public class ProductionCountry {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "iso_code")
+    @Column(name = "iso_code", unique = true)
     private String isoCode;
 
+    @Column(unique = true)
     private String name;
 
 
