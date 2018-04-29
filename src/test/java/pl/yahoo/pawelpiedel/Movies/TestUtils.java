@@ -11,9 +11,9 @@ import pl.yahoo.pawelpiedel.Movies.dto.ProductionCountryDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestUtils {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
@@ -52,18 +52,16 @@ public class TestUtils {
 
     public static MovieDTO createMovieDTOFromEntity(Movie movie) {
         MovieDTO movieDTO = new MovieDTO();
-        GenreDTO genreDTO1 = new GenreDTO(movie.getGenres().get(0).getName());
-        List<GenreDTO> genres = new ArrayList<>();
-        genres.add(genreDTO1);
 
-        ProductionCompanyDTO productionCompanyDTO1 = new ProductionCompanyDTO(movie.getProductionCompanies().get(0).getName());
-        List<ProductionCompanyDTO> productionCompanies = new ArrayList<>();
-        productionCompanies.add(productionCompanyDTO1);
-
-
-        ProductionCountryDTO productionCountryDTO1 = new ProductionCountryDTO(movie.getProductionCountries().get(0).getName());
-        List<ProductionCountryDTO> productionCountries = new ArrayList<>();
-        productionCountries.add(productionCountryDTO1);
+        List<GenreDTO> genres = movie.getGenres().stream()
+                .map(genre -> new GenreDTO(genre.getName()))
+                .collect(Collectors.toList());
+        List<ProductionCompanyDTO> productionCompanies = movie.getProductionCompanies().stream()
+                .map(productionCompany -> new ProductionCompanyDTO(productionCompany.getName()))
+                .collect(Collectors.toList());
+        List<ProductionCountryDTO> productionCountries = movie.getProductionCountries().stream()
+                .map(productionCountry -> new ProductionCountryDTO(productionCountry.getName()))
+                .collect(Collectors.toList());
 
         movieDTO.setTitle(movie.getTitle());
         movieDTO.setGenres(genres);

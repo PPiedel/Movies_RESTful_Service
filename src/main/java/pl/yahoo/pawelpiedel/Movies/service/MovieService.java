@@ -1,4 +1,4 @@
-package pl.yahoo.pawelpiedel.Movies.service.movie;
+package pl.yahoo.pawelpiedel.Movies.service;
 
 import java.util.List;
 import java.util.Optional;

@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
@@ -83,7 +84,7 @@ public class RandomPortMoviesTestClient {
 
     @Test
     public void whenNoMoviesSavedGetAllMoviesShouldResponseWithEmptyList() throws Exception {
-        //given
+        //given no movies saved
 
         //when
         ResultActions resultActions = mockMvc.perform(get(API_BASE_URL)
@@ -117,12 +118,14 @@ public class RandomPortMoviesTestClient {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO savedDTO = createMovieDTOFromEntity(movie);
-        mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(savedDTO)));
+                .content(asJsonString(savedDTO)))
+                .andReturn();
+        String location = mvcResult.getResponse().getHeader("Location");
 
         //when
-        ResultActions resultActions = mockMvc.perform(get(API_BASE_URL + "/" + "1")
+        ResultActions resultActions = mockMvc.perform(get(location)
                 .contentType(MediaType.APPLICATION_JSON));
 
         //then
@@ -178,12 +181,13 @@ public class RandomPortMoviesTestClient {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
-        mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(movieDTO)));
+                .content(asJsonString(movieDTO))).andReturn();
+        String location = mvcResult.getResponse().getHeader("Location");
 
         //when
-        ResultActions resultActions = mockMvc.perform(get(API_BASE_URL + "/" + "1")
+        ResultActions resultActions = mockMvc.perform(get(location)
                 .contentType(MediaType.APPLICATION_JSON));
 
         //then

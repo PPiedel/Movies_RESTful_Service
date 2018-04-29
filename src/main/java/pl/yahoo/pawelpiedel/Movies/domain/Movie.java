@@ -2,6 +2,7 @@ package pl.yahoo.pawelpiedel.Movies.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,23 +15,23 @@ public class Movie {
 
     private String title;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "movies_genres",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id"))
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "movies_production_companies",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_company_id", referencedColumnName = "id"))
-    private List<ProductionCompany> productionCompanies;
+    private List<ProductionCompany> productionCompanies = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "movies_production_countries",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "production_country_id", referencedColumnName = "id"))
-    private List<ProductionCountry> productionCountries;
+    private List<ProductionCountry> productionCountries = new ArrayList<>();
 
     @Column(name = "release_date")
     private LocalDate releaseDate;

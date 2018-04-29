@@ -10,7 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.dto.EntityDTOMapper;
 import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
-import pl.yahoo.pawelpiedel.Movies.service.movie.MovieService;
+import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -52,6 +52,7 @@ public class MoviesController {
     @PostMapping
     public ResponseEntity<?> addMovie(@RequestBody @Valid MovieDTO movieDTO) {
         Movie movie = mapper.convertToEntity(movieDTO);
+
         Movie savedMovie = movieService.save(movie);
 
         if (savedMovie!=null){

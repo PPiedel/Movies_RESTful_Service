@@ -18,7 +18,7 @@ import pl.yahoo.pawelpiedel.Movies.TestUtils;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.dto.EntityDTOMapper;
 import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
-import pl.yahoo.pawelpiedel.Movies.service.movie.MovieService;
+import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;

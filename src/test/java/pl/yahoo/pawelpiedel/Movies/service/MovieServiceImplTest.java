@@ -11,9 +11,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
+import pl.yahoo.pawelpiedel.Movies.repository.GenreRepository;
 import pl.yahoo.pawelpiedel.Movies.repository.MovieRepository;
-import pl.yahoo.pawelpiedel.Movies.service.movie.MovieService;
-import pl.yahoo.pawelpiedel.Movies.service.movie.MovieServiceImpl;
+import pl.yahoo.pawelpiedel.Movies.repository.ProductionCompanyRepository;
+import pl.yahoo.pawelpiedel.Movies.repository.ProductionCountryRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +31,15 @@ public class MovieServiceImplTest {
 
     @MockBean
     MovieRepository movieRepository;
+
+    @MockBean
+    GenreRepository genreRepository;
+
+    @MockBean
+    ProductionCountryRepository productionCountryRepository;
+
+    @MockBean
+    ProductionCompanyRepository productionCompanyRepository;
 
     @Mock
     Movie movieMock;
@@ -115,15 +125,14 @@ public class MovieServiceImplTest {
     @Test
     public void saveShouldReturnSavedMovie() {
         //given
-        Movie movie = new Movie();
-        movie.setTitle("testTitle");
-        when(movieRepository.save(any(Movie.class))).thenReturn(movie);
+
+        when(movieRepository.save(any(Movie.class))).thenReturn(movieMock);
 
         //when
-        Movie saved = movieRepository.save(movie);
+        Movie saved = movieRepository.save(movieMock);
 
         //then
-        assertEquals(movie, saved);
+        assertEquals(movieMock, saved);
     }
 
     @Test
@@ -141,8 +150,8 @@ public class MovieServiceImplTest {
     @TestConfiguration
     static class MovieServiceImplTestConfiguration {
         @Bean
-        public MovieService movieService(MovieRepository movieRepository) {
-            return new MovieServiceImpl(movieRepository);
+        public MovieService movieService(MovieRepository movieRepository, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository) {
+            return new MovieServiceImpl(movieRepository, genreRepository, productionCompanyRepository, productionCountryRepository);
         }
     }
 }
