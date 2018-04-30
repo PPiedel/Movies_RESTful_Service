@@ -22,7 +22,7 @@ public class GenreRepositoryTest {
     private GenreRepository genreRepository;
 
     @Test
-    public void findByNameShouldReturnGenre() {
+    public void findByName_ExistingNamePassed_GenreReturned() {
         //given
         String testName = "comedy";
         Genre persisted = new Genre(testName);
@@ -37,7 +37,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    public void findByNameShouldReturnNull() {
+    public void findByName_NotExistingNamePassed_NullReturned() {
         //given
         String testName = "comedy";
 

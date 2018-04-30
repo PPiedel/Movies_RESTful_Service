@@ -50,20 +50,20 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void getAllMoviesShouldReturnExactlyOneMovie() {
+    public void getAllMovies_OneMovieInDB_SingletonListReturned() {
         //given
         java.util.List<Movie> persistedMovies = Collections.singletonList(movieMock);
         when(movieRepository.findAll()).thenReturn(persistedMovies);
 
         //when
-        java.util.List<Movie> foundeMovies = movieRepository.findAll();
+        java.util.List<Movie> foundeMovies = movieService.getAllMovies();
 
         //then
         assertEquals(persistedMovies, foundeMovies);
     }
 
     @Test
-    public void getAllMoviesShouldReturnMovieList() {
+    public void getAllMovies_MoviesInDB_MoviesListReturned() {
         //given
         Movie movie1 = new Movie();
         movie1.setTitle("test1");
@@ -75,27 +75,27 @@ public class MovieServiceImplTest {
         when(movieRepository.findAll()).thenReturn(persistedMovies);
 
         //when
-        java.util.List<Movie> foundedMovies = movieRepository.findAll();
+        java.util.List<Movie> foundedMovies = movieService.getAllMovies();
 
         //then
         assertEquals(persistedMovies, foundedMovies);
     }
 
     @Test
-    public void getAllMoviesShouldEmptyList() {
+    public void getAllMovies_NoMoviesInDb_EmptyListReturned() {
         //given
         java.util.List<Movie> persistedMovies = Collections.emptyList();
         when(movieRepository.findAll()).thenReturn(persistedMovies);
 
         //when
-        java.util.List<Movie> foundeMovies = movieRepository.findAll();
+        java.util.List<Movie> foundeMovies = movieService.getAllMovies();
 
         //then
         assertEquals(persistedMovies, foundeMovies);
     }
 
     @Test
-    public void findMovieByIdShouldReturnOptionalWithMovie() {
+    public void findMovieById_ExistingIdPassed_OptionalWithMovieReturned() {
         //given
         Movie persisted = new Movie();
         long testId = 1L;
@@ -104,19 +104,19 @@ public class MovieServiceImplTest {
         when(movieRepository.findById(testId)).thenReturn(Optional.of(persisted));
 
         //when
-        Optional<Movie> foundMovie = movieRepository.findById(testId);
+        Optional<Movie> foundMovie = movieService.findMovieById(testId);
 
         //then
         assertEquals(persisted, foundMovie.get());
     }
 
     @Test
-    public void findMovieByIdShouldReturnEmptyOptional() {
+    public void findMovieById_NotExistingIdPassed_EmptyOptionalReturned() {
         //given
-        long testId = 1L;
+        long notExistingMovieId = 1L;
 
         //when
-        Optional<Movie> foundMovie = movieRepository.findById(testId);
+        Optional<Movie> foundMovie = movieService.findMovieById(notExistingMovieId);
 
         //then
         assertEquals(Optional.empty(), foundMovie);
@@ -128,7 +128,7 @@ public class MovieServiceImplTest {
         when(movieRepository.save(any(Movie.class))).thenReturn(movieMock);
 
         //when
-        Movie saved = movieRepository.save(movieMock);
+        Movie saved = movieService.save(movieMock);
 
         //then
         assertEquals(movieMock, saved);
@@ -140,7 +140,7 @@ public class MovieServiceImplTest {
         when(movieRepository.save(null)).thenReturn(null);
 
         //when
-        Movie saved = movieRepository.save(null);
+        Movie saved = movieService.save(null);
 
         //then
         assertEquals(null, saved);

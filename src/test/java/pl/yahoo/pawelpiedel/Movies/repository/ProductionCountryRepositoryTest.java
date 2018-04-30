@@ -21,7 +21,7 @@ public class ProductionCountryRepositoryTest {
     private ProductionCountryRepository productionCountryRepository;
 
     @Test
-    public void findByNameShouldProductionCountry() {
+    public void findByName_ExistingNamePassed_CountryReturned() {
         //given
         String testCountryName = "testCountryName";
         ProductionCountry persisted = new ProductionCountry(testCountryName);
@@ -36,7 +36,7 @@ public class ProductionCountryRepositoryTest {
     }
 
     @Test
-    public void findByNameShouldReturnNull() {
+    public void findByName_NotExistingNamePassed_NullReturned() {
         //given
         String testCountryName = "testCountryName";
 

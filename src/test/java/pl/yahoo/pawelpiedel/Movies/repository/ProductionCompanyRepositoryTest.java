@@ -22,7 +22,7 @@ public class ProductionCompanyRepositoryTest {
     private ProductionCompanyRepository productionCompanyRepository;
 
     @Test
-    public void findByNameShouldReturnCompany() {
+    public void findByName_ExistingNamePassed_CompanyReturned() {
         //given
         String testName = "testName";
         ProductionCompany persisted = new ProductionCompany(testName);
@@ -37,7 +37,7 @@ public class ProductionCompanyRepositoryTest {
     }
 
     @Test
-    public void findByNameShouldReturnNull() {
+    public void findByName_NotExistingNamePassed_NullReturned() {
         //given
         String testName = "testName";
 

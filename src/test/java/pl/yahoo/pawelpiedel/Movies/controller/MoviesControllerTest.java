@@ -52,7 +52,7 @@ public class MoviesControllerTest {
     MovieService movieService;
 
     @Test
-    public void getAllMovies_OneMovieInDB_JsonArrayReturned() throws Exception {
+    public void getAllMovies_OneMovieInDB_JsonArrayOfSizeOneReturned() throws Exception {
         //given
         Movie movie = TestUtils.createTestMovieWithAllFields();
         List<Movie> movies = Collections.singletonList(movie);
@@ -130,7 +130,7 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void addMovie_ValidDTO_CreatedReturned() throws Exception {
+    public void addMovie_ValidDTO_StatusCreatedReturned() throws Exception {
         //given
         Movie movie = TestUtils.createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);

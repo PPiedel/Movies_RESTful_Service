@@ -41,7 +41,7 @@ public class RandomPortMoviesTestClient {
     private MockMvc mockMvc;
 
     @Test
-    public void whenMoviesSavedGetAllMoviesShouldResponseWithList() throws Exception {
+    public void getAllMovies_MoviesSaved_ReposnseWIthAllSavedMovies() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO firstMovieDTO = createMovieDTOFromEntity(movie);
@@ -83,7 +83,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void whenNoMoviesSavedGetAllMoviesShouldResponseWithEmptyList() throws Exception {
+    public void getAllMovies_NoMoviesInDb_EmptyJsonArrayReturned() throws Exception {
         //given no movies saved
 
         //when
@@ -97,7 +97,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void addMovieShouldResponseWithIsCreated() throws Exception {
+    public void addMovie_ValidDTOPassed_StatusCreatedWithLocationReturned() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
@@ -114,7 +114,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void afterAddingMovieCanBeRead() throws Exception {
+    public void movieAdded_TheSameMovieDetailsWanted_MovieReturned() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO savedDTO = createMovieDTOFromEntity(movie);
@@ -143,7 +143,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void whenMovieWithNoTitleToCreationResponseWithClientError() throws Exception {
+    public void addMovie_MovieDTOWithNoTitlePassed_ClientErrorReturned() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
@@ -160,7 +160,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void whenMovieWithNullTitleToCreationResponseWithClientError() throws Exception {
+    public void addMovie_MovieDTOWithNullTitlePassed_ClientErrorReturned() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
@@ -177,7 +177,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void whenMovieAlreadySavedWantedResponseWithDetails() throws Exception {
+    public void movieDetails_MovieSavedInDB_MovieDetailsReturned() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
@@ -206,7 +206,7 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
-    public void whenNotExistingMovieWantedResponseWithClientError() throws Exception {
+    public void movieDetails_NotExistingIdPassed_ClientErrorReturned() throws Exception {
         //given
         Long notExistingId = 999L;
 
