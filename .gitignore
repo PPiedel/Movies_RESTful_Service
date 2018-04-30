@@ -50,6 +50,8 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+target/
+
 # *.iml
 # modules.xml
 # .idea/misc.xml
