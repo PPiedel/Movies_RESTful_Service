@@ -13,6 +13,7 @@ import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
 import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class MoviesController {
         List<Movie> allMovies = movieService.getAllMovies();
 
         return allMovies.stream()
-                .map(movie -> mapper.convertToDTO(movie).addLinks(movie))
+                .map(movie -> mapper.asDTO(movie).addLinks(movie))
                 .collect(Collectors.toList());
     }
 
@@ -45,23 +46,18 @@ public class MoviesController {
     public ResponseEntity<MovieDTO> getMovieDetails(@PathVariable(value = "id") Long id) {
         Optional<Movie> movie = movieService.findMovieById(id);
         return movie
-                .map(value -> new ResponseEntity<>(mapper.convertToDTO(value).addLinks(value), HttpStatus.OK))
+                .map(value -> new ResponseEntity<>(mapper.asDTO(value).addLinks(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<?> addMovie(@RequestBody @Valid MovieDTO movieDTO) {
-        Movie movie = mapper.convertToEntity(movieDTO);
-
+    public ResponseEntity<?> addMovie(@RequestBody @NotNull @Valid MovieDTO movieDTO) {
+        Movie movie = mapper.asEntity(movieDTO);
         Movie savedMovie = movieService.save(movie);
 
-        if (savedMovie!=null){
-            URI location = buildUri(savedMovie);
-            return ResponseEntity.created(location).build();
-        }
-        else {
-            return ResponseEntity.noContent().build();
-        }
+        URI location = buildUri(savedMovie);
+
+        return ResponseEntity.created(location).build();
     }
 
     private URI buildUri(Movie savedMovie) {

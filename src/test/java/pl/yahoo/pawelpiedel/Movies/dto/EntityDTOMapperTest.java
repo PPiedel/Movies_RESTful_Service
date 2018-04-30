@@ -1,24 +1,22 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import pl.yahoo.pawelpiedel.Movies.TestUtils;
 import pl.yahoo.pawelpiedel.Movies.domain.Genre;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.domain.ProductionCompany;
 import pl.yahoo.pawelpiedel.Movies.domain.ProductionCountry;
+import pl.yahoo.pawelpiedel.Movies.repository.GenreRepository;
+import pl.yahoo.pawelpiedel.Movies.repository.ProductionCompanyRepository;
+import pl.yahoo.pawelpiedel.Movies.repository.ProductionCountryRepository;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +25,13 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
+@DataJpaTest
 public class EntityDTOMapperTest {
     @Autowired
     EntityDTOMapper mapper;
 
     @Test
-    public void convertToMovieEntity() throws ParseException {
+    public void asEntity_MovieDTOPassed_MovieEntityReturned() {
         //given
         MovieDTO movieDTO = new MovieDTO();
         GenreDTO genreDTO = new GenreDTO("comedy");
@@ -62,7 +61,7 @@ public class EntityDTOMapperTest {
         movieDTO.setDate(date);
 
         //when
-        Movie entity = mapper.convertToEntity(movieDTO);
+        Movie entity = mapper.asEntity(movieDTO);
 
         //then
         assertEquals(movieDTO.getTitle(), entity.getTitle());
@@ -82,12 +81,12 @@ public class EntityDTOMapperTest {
     }
 
     @Test
-    public void convertToDTO() throws Exception {
+    public void asDTO_MovieEntityPassed_MovieDTOReturned() {
         //given
         Movie entity = TestUtils.createTestMovieWithAllFields();
 
         //when
-        MovieDTO convertedDTO = mapper.convertToDTO(entity);
+        MovieDTO convertedDTO = mapper.asDTO(entity);
 
         //then
         assertEquals(entity.getTitle(), convertedDTO.getTitle());
@@ -114,8 +113,8 @@ public class EntityDTOMapperTest {
         }
 
         @Bean
-        public EntityDTOMapper entityDTOMapper(ModelMapper modelMapper) {
-            return new EntityDTOMapper(modelMapper);
+        EntityDTOMapper entityDTOMapper(ModelMapper modelMapper, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository) {
+            return new EntityDTOMapper(modelMapper, genreRepository, productionCompanyRepository, productionCountryRepository);
         }
     }
 }

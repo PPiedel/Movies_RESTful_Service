@@ -6,7 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,9 @@ import pl.yahoo.pawelpiedel.Movies.TestUtils;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.dto.EntityDTOMapper;
 import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
+import pl.yahoo.pawelpiedel.Movies.repository.GenreRepository;
+import pl.yahoo.pawelpiedel.Movies.repository.ProductionCompanyRepository;
+import pl.yahoo.pawelpiedel.Movies.repository.ProductionCountryRepository;
 import pl.yahoo.pawelpiedel.Movies.service.MovieService;
 
 import java.time.format.DateTimeFormatter;
@@ -35,7 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static pl.yahoo.pawelpiedel.Movies.TestUtils.createMovieDTOFromEntity;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MoviesController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class MoviesControllerTest {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
     private static final String API_BASE_URL = "/api/movies";
@@ -47,7 +52,7 @@ public class MoviesControllerTest {
     MovieService movieService;
 
     @Test
-    public void getAllMoviesShouldReturnJsonArrayWithOneMovieDTO() throws Exception {
+    public void getAllMovies_OneMovieInDB_JsonArrayReturned() throws Exception {
         //given
         Movie movie = TestUtils.createTestMovieWithAllFields();
         List<Movie> movies = Collections.singletonList(movie);
@@ -73,7 +78,7 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void getAllMoviesShouldReturnEmptyJsonArray() throws Exception {
+    public void getAllMovies_NoMoviesInDb_EmptyJsonArrayReturned() throws Exception {
         //given
         when(movieService.getAllMovies()).thenReturn(Collections.emptyList());
 
@@ -87,7 +92,7 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void getMovieDetailsShouldReturnOkResponseWithMovie() throws Exception {
+    public void getMovieDetails_MovieInDb_DetailsReturned() throws Exception {
         //given
         Movie movie = TestUtils.createTestMovieWithAllFields();
         movie.setId(1L);
@@ -111,7 +116,7 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void getMovieDetailsShouldReturnNotFoundResponse() throws Exception {
+    public void getMovieDetails_NotExistingMovie_ClientErrorReturned() throws Exception {
         //given
         Long notExistingId = 999L;
         when(movieService.findMovieById(notExistingId)).thenReturn(Optional.empty());
@@ -125,7 +130,7 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void addMovieShouldResposneWithIsCreated() throws Exception {
+    public void addMovie_ValidDTO_CreatedReturned() throws Exception {
         //given
         Movie movie = TestUtils.createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
@@ -143,22 +148,20 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void addMovieShouldResponseWithNoContent() throws Exception {
+    public void addMovie_NullDtoPassed_ClientErrorReturned() throws Exception {
         //given
-        Movie movie = TestUtils.createTestMovieWithAllFields();
-        MovieDTO movieDTO = createMovieDTOFromEntity(movie);
-        when(movieService.save(ArgumentMatchers.any(Movie.class))).thenReturn(null);
+        MovieDTO movieDTO = null;
 
         //when
         ResultActions resultActions = mockMvc.perform(post(API_BASE_URL).contentType(MediaType.APPLICATION_JSON).content(asJsonString(movieDTO)));
 
         //then
         resultActions
-                .andExpect(status().isNoContent());
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void addMovieShouldResponseWithCientErrorWhenEmptyJSONIsPassed() throws Exception {
+    public void addMovie_EmptyDTOPassed_ClientErrorReturned() throws Exception {
         //given
 
         //when
@@ -172,7 +175,7 @@ public class MoviesControllerTest {
     }
 
     @Test
-    public void addMovieShouldResponseWithCientErrorWhenNotValidJSONIsPassed() throws Exception {
+    public void addMovie_NotValidDtoPassed_ClientErrorReturned() throws Exception {
         //given
 
         //when
@@ -201,8 +204,8 @@ public class MoviesControllerTest {
         }
 
         @Bean
-        EntityDTOMapper entityDTOMapper(ModelMapper modelMapper) {
-            return new EntityDTOMapper(modelMapper);
+        EntityDTOMapper entityDTOMapper(ModelMapper modelMapper, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository) {
+            return new EntityDTOMapper(modelMapper, genreRepository, productionCompanyRepository, productionCountryRepository);
         }
     }
 }

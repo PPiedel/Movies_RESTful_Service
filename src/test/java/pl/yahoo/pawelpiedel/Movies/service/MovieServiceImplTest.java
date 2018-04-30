@@ -125,7 +125,6 @@ public class MovieServiceImplTest {
     @Test
     public void saveShouldReturnSavedMovie() {
         //given
-
         when(movieRepository.save(any(Movie.class))).thenReturn(movieMock);
 
         //when
@@ -138,6 +137,7 @@ public class MovieServiceImplTest {
     @Test
     public void saveShouldReturnNull() {
         //given
+        when(movieRepository.save(null)).thenReturn(null);
 
         //when
         Movie saved = movieRepository.save(null);
@@ -150,8 +150,8 @@ public class MovieServiceImplTest {
     @TestConfiguration
     static class MovieServiceImplTestConfiguration {
         @Bean
-        public MovieService movieService(MovieRepository movieRepository, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository) {
-            return new MovieServiceImpl(movieRepository, genreRepository, productionCompanyRepository, productionCountryRepository);
+        public MovieService movieService(MovieRepository movieRepository) {
+            return new MovieServiceImpl(movieRepository);
         }
     }
 }
