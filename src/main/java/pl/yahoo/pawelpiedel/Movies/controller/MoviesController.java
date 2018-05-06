@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/movies")
 public class MoviesController {
-    public final static String ALL_MOVIES_LINK_RELATION_NAME = "all";
     private final static Logger logger = LoggerFactory.getLogger(MoviesController.class);
     private final MovieService movieService;
     private final EntityDTOMapper mapper;

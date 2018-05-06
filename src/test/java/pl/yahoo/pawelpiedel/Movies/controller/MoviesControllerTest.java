@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -40,6 +41,7 @@ import static pl.yahoo.pawelpiedel.Movies.TestUtils.createMovieDTOFromEntity;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class MoviesControllerTest {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-d");
@@ -144,6 +146,23 @@ public class MoviesControllerTest {
         resultActions
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", containsString("http://localhost" + API_BASE_URL)));
+
+    }
+
+    @Test
+    public void addMovie_DateInWrongFormatPassed_ClientErrorReturned() throws Exception {
+        //given
+        Movie movie = TestUtils.createTestMovieWithAllFields();
+        MovieDTO movieDTO = createMovieDTOFromEntity(movie);
+        movieDTO.setDate("27-03-2018");
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post(API_BASE_URL).contentType(MediaType.APPLICATION_JSON).content(asJsonString(movieDTO)));
+
+
+        //then
+        resultActions
+               .andExpect(status().is4xxClientError());
 
     }
 

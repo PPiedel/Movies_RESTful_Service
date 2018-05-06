@@ -9,11 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import pl.yahoo.pawelpiedel.Movies.TestUtils;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.dto.MovieDTO;
 
@@ -23,12 +25,14 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.yahoo.pawelpiedel.Movies.TestUtils.createMovieDTOFromEntity;
 import static pl.yahoo.pawelpiedel.Movies.TestUtils.createTestMovieWithAllFields;
 import static pl.yahoo.pawelpiedel.Movies.controller.MoviesControllerTest.asJsonString;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "src/test/resources/application.properties")
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -48,10 +52,10 @@ public class RandomPortMoviesTestClient {
         MovieDTO secondMovieDTO = createMovieDTOFromEntity(movie);
         secondMovieDTO.setTitle("Second title");
 
-        mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(firstMovieDTO)));
-        mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(secondMovieDTO)));
 
@@ -103,7 +107,7 @@ public class RandomPortMoviesTestClient {
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
 
         //when
-        ResultActions postActions = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        ResultActions postActions = mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(movieDTO)));
 
@@ -114,11 +118,36 @@ public class RandomPortMoviesTestClient {
     }
 
     @Test
+    public void addMovie_DateInWrongFormatPassed_ClientErrorReturned() throws Exception {
+        //given
+        String movieDTO = "{\n" +
+                "\t\"title\":\"New 6 added movie\",\n" +
+                "\t\"genres\":[{\"name\":\"Comedy\"},{\"name\":\"Drama\"}],\n" +
+                "\t\"productionCompanies\":[{\"name\":\"Walt\"}],\n" +
+                "\t\"productionCountries\":[{\"name\":\"UK\"},{\"name\":\"Norway\"}],\n" +
+                "\t\"date\":\"28-02-2000\",\n" +
+                "\t\"backdropPath\":null,\n" +
+                "\t\"budget\":600000,\n" +
+                "\t\"duration\":120,\n" +
+                "\t\"overview\":\"test Overview\"\n" +
+                "}";
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post(API_BASE_URL).contentType(MediaType.APPLICATION_JSON).content(movieDTO));
+
+
+        //then
+        resultActions
+                .andExpect(status().is4xxClientError());
+
+    }
+
+    @Test
     public void movieAdded_TheSameMovieDetailsWanted_MovieReturned() throws Exception {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO savedDTO = createMovieDTOFromEntity(movie);
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        MvcResult mvcResult = mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(savedDTO)))
                 .andReturn();
@@ -150,7 +179,7 @@ public class RandomPortMoviesTestClient {
         movieDTO.setTitle("");
 
         //when
-        ResultActions postActions = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        ResultActions postActions = mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(movieDTO)));
 
@@ -167,7 +196,7 @@ public class RandomPortMoviesTestClient {
         movieDTO.setTitle(null);
 
         //when
-        ResultActions postActions = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        ResultActions postActions = mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(movieDTO)));
 
@@ -181,7 +210,7 @@ public class RandomPortMoviesTestClient {
         //given
         Movie movie = createTestMovieWithAllFields();
         MovieDTO movieDTO = createMovieDTOFromEntity(movie);
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(API_BASE_URL)
+        MvcResult mvcResult = mockMvc.perform(post(API_BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(movieDTO))).andReturn();
         String location = mvcResult.getResponse().getHeader("Location");

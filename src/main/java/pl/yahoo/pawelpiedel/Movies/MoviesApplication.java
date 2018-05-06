@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import pl.yahoo.pawelpiedel.Movies.domain.Genre;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
 import pl.yahoo.pawelpiedel.Movies.domain.ProductionCompany;
@@ -27,15 +28,9 @@ public class MoviesApplication {
 
 	@Bean
     @Transactional
-    public CommandLineRunner loadData(GenreRepository genreRepository, ProductionCountryRepository productionCountryRepository,
-                                      ProductionCompanyRepository productionCompanyRepository, MovieRepository movieRepository) {
+    @Profile("!test")
+    public CommandLineRunner loadData(MovieRepository movieRepository) {
 		return (args) -> {
-            ProductionCountry productionCountry4 = productionCountryRepository.saveAndFlush(new ProductionCountry("UK"));
-            ProductionCountry productionCountry5 = productionCountryRepository.saveAndFlush(new ProductionCountry("Norway"));
-
-            ProductionCompany productionCompany3 = productionCompanyRepository.saveAndFlush(new ProductionCompany("Movies Studio"));
-            ProductionCompany productionCompany4 = productionCompanyRepository.saveAndFlush(new ProductionCompany("Pictures Studio"));
-
             Movie movie1 = new Movie();
             movie1.setTitle("The Shawshank Redemption");
             movie1.setBudget(100000);
@@ -45,8 +40,18 @@ public class MoviesApplication {
             movie1.setDuration(120);
             movie1.setReleaseDate(LocalDate.now());
             movie1.setOverview("Simple movie overview");
-            movieRepository.save(movie1);
 
+            Movie movie2 = new Movie();
+            movie2.setTitle("Pirates of the Caribbean");
+            movie2.setBudget(120000000);
+            movie2.setGenres(Arrays.asList(new Genre("Romance"),new Genre("Thriller")));
+            movie2.setProductionCountries(Arrays.asList(new ProductionCountry("UK"),new ProductionCountry("Norway")));
+            movie2.setProductionCompanies(Arrays.asList(new ProductionCompany("Movies Studio"),new ProductionCompany("Pictures Studio")));
+            movie2.setDuration(100);
+            movie2.setReleaseDate(LocalDate.now());
+            movie2.setOverview("Pirates of the Caribbean is a great movie.");
+
+            movieRepository.saveAll(Arrays.asList(movie1,movie2));
 
 		};
 	}
