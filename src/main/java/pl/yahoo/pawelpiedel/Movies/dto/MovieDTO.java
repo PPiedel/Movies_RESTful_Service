@@ -1,9 +1,11 @@
 package pl.yahoo.pawelpiedel.Movies.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import pl.yahoo.pawelpiedel.Movies.controller.MoviesController;
 import pl.yahoo.pawelpiedel.Movies.domain.Movie;
+import pl.yahoo.pawelpiedel.Movies.domain.date.DateConstraint;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -12,15 +14,17 @@ import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import static pl.yahoo.pawelpiedel.Movies.controller.MoviesController.ALL_MOVIES_LINK_RELATION_NAME;
 
 public class MovieDTO extends ResourceSupport {
+    private final static String ALL_MOVIES_LINK_RELATION_NAME = "all";
+
     @NotNull
     @NotEmpty
     private String title;
     private List<GenreDTO> genres;
     private List<ProductionCompanyDTO> productionCompanies;
     private List<ProductionCountryDTO> productionCountries;
+    @DateConstraint
     private String date;
     private String backdropPath;
     private Integer budget;
